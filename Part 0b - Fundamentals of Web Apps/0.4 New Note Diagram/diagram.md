@@ -41,7 +41,7 @@ sequenceDiagram
 
     Browser->>Server: POST https://studies.cs.helsinki.fi/exampleapp/new_note, payload: {"note": "Test Note"}
     activate Server
-    Server->>Browser: 302 redirect to https://studies.cs.helsinki.fi/exampleapp/notes
+    Server-->Browser: 302 redirect to https://studies.cs.helsinki.fi/exampleapp/notes
     deactivate Server
 
     Note right of Browser: The Browser loads the redirected URL and shows the updated list
