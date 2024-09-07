@@ -1,3 +1,22 @@
 # Full Stack Open course (University of Helsinki, 2024)
 
-This repository contains exercises for the [Full Stack Open](https://fullstackopen.com/en/). The course provides "an introduction to modern web development with JavaScript. The main focus is on single-page applications (SPA) implemented with React and Node.js".
+This repository contains solutions for the [Full Stack Open](https://fullstackopen.com/en/) course: an introduction to modern web development with JavaScript. The main focus is on single-page applications (SPA) implemented with React and Node.js.
+
+### Current Status
+
+| Part   | Hours         | Status          | Solutions | Topic                                                          |
+| :----: | :-----------: | :-------------: | :-------: | :-------------------------------------------------------------: | 
+| 0      | 8             | ✔️ Completed     | [Solution Part 0](https://github.com/gianlucaromeo/full-stack-open/tree/main/Part%200b%20-%20Fundamentals%20of%20Web%20Apps) | [Fundamentals of Web apps](https://fullstackopen.com/en/part0) | 
+| 1  | TODO | TODO | TODO | TODO |
+| 2  | TODO | TODO | TODO | TODO |
+| 3  | TODO | TODO | TODO | TODO |
+| 4  | TODO | TODO | TODO | TODO |
+| 5  | TODO | TODO | TODO | TODO |
+| 6  | TODO | TODO | TODO | TODO |
+| 7  | TODO | TODO | TODO | TODO |
+| 8  | TODO | TODO | TODO | TODO |
+| 9  | TODO | TODO | TODO | TODO |
+| 10 | TODO | TODO | TODO | TODO |
+| 11 | TODO | TODO | TODO | TODO |
+| 12 | TODO | TODO | TODO | TODO |
+| 13 | TODO | TODO | TODO | TODO |
