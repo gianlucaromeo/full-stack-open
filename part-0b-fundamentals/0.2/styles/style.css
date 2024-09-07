@@ -1,0 +1,103 @@
+/*
+    There are many different types of selectors:
+    - element selector: h1, h2, h3, p
+    - id selector: #id
+    - class selector: .class
+    - attribute selector: [attribute]
+    - pseudo-class selector: :pseudo-class
+    
+    You can also combine selectors:
+    - element.class
+    - element#id
+    - element.class#id
+    - element.class1.class2
+    - element.class1.class2#id
+    - etc.
+
+    You can also use combinators:
+    - descendant combinator: A B
+    - child combinator: A > B
+    - adjacent sibling combinator: A + B
+    - general sibling combinator: A ~ B
+    - etc.
+
+    You can also use pseudo-elements:
+    - ::before -> used to insert content before the content of an element
+    - ::after -> used to insert content after the content of an element
+    - ::first-line -> used to style the first line of an element
+    - ::first-letter -> used to style the first letter of an element
+    - ::selection -> used to style the selected text
+    - etc.
+
+    Difference between pseudo-classes and pseudo-attributes:
+    - pseudo-classes are used to define the special state of an element
+    - pseudo-attributes are used to define the special part of an element
+    For example:
+    - :hover -> pseudo-class
+    - ::first-letter -> pseudo-element
+*/
+.protest-guerrilla-regular {
+    font-family: "Protest Guerrilla", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+html {
+    background-color: #e2f1ff;
+    font-size: 13px;
+    font-family: 'Protest Guerrilla', serif;
+}
+
+body {
+    width: 500px;
+    margin: 0 auto;
+    background-color: #c9fdc4;
+    padding: 0 20px 20px 20px;
+    border: 5px solid black;
+  }
+
+  h1 {
+    margin: 0;
+    padding: 20px 0;
+    color: #00539f;
+    text-shadow: 3px 3px 1px black;
+  }
+
+/* First letter of h1 */
+h1::first-letter {
+    color: red;
+    font-size: 90px;
+}
+
+h2 {
+    color: green;
+    font-size: 18px;
+}
+
+h3 {
+    color: purple;
+    font-size: 16px;
+}
+
+p {
+    color: rgb(179, 104, 116);
+    font-size: 16px;
+    line-height: 3;
+    letter-spacing: 2px;
+    border: 1px solid black;
+}
+
+/* span is used to group elements */
+span {
+    background-color: yellow;
+}
+
+/* strong is used to define important text */
+strong {
+    color: rebeccapurple;
+}
+
+/* em is used to emphasize text */
+em {
+    color: rebeccapurple;
+}
