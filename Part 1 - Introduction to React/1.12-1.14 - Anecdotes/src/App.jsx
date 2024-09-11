@@ -26,12 +26,16 @@ const App = () => {
     setSelected(randomIndex)
   }
 
+  const maxPointsIndex = points.indexOf(Math.max(...points))
+
   return (
     <>
       <p>{anecdotes[selected]}</p>
       <p>Has {points[selected]} votes</p>
       <button onClick={nextAnecdote}>Next anecdote</button>
       <button onClick={updatePoints}>Vote</button>
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[maxPointsIndex]}</p>
     </>
   )
 }
