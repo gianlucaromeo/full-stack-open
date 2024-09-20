@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import axios from 'axios'
 
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import { useEffect } from 'react'
+import phonebookService from './services/phonebook'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -13,14 +13,11 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-      })
+    phonebookService
+      .getAll()
+      .then(initialPersons => setPersons(initialPersons))
   }, [])
 
-  // TODO: Add a new person to the db.json file
   const addPerson = (event) => {
     event.preventDefault()
 
@@ -30,9 +27,18 @@ const App = () => {
       return
     }
 
-    setPersons(persons.concat({ name: newName, number: newNumber }))
-    setNewName('')
-    setNewNumber('')
+    const newPersonObject = {
+      name: newName,
+      number: newNumber
+    }
+
+    phonebookService
+      .create(newPersonObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')
+      })
   }
 
   const handleNameChange = (event) => {
