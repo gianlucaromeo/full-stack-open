@@ -12,9 +12,9 @@ const Persons = (props) => {
         <div>
             {props.persons.map(person =>
                 <div key={person.name}>
-                    <p>
+                    <span>
                         {person.name} {person.number}
-                    </p>
+                    </span>
                     <button onClick={() => showConfirmation(person)}>
                         delete
                     </button>
