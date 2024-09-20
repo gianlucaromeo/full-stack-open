@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import { useEffect } from 'react'
 import phonebookService from './services/phonebook'
+
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -41,6 +41,15 @@ const App = () => {
       })
   }
 
+  const deletePerson = (id) => {
+    phonebookService
+      .deletePerson(id)
+      .then(returnedPerson => {
+        console.log('Deleted person with id:', returnedPerson.id)
+        setPersons(persons.filter(person => person.id !== id))
+      })
+  }
+
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
@@ -70,7 +79,7 @@ const App = () => {
         addPerson={addPerson}
       />
       <h3>Numbers</h3>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} onDeletePerson={deletePerson} />
     </div>
   )
 }
