@@ -1,1 +1,1 @@
-Link to live server (Render): https://full-stack-open-znx0.onrender.com
+Check the live server (Render): https://full-stack-open-znx0.onrender.com
