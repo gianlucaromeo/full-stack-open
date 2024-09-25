@@ -1,0 +1,14 @@
+{
+  "name": "3.12---command-line-database",
+  "version": "1.0.0",
+  "description": "Phonebook MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gianluca Romeo",
+  "license": "MIT",
+  "dependencies": {
+    "mongoose": "^8.6.3"
+  }
+}
