@@ -2,7 +2,7 @@ POST http://localhost:3001/api/notes/
 Content-Type: application/json
 
 {
-    "content": "This is another new note",
+    "content": "This is a new note from vs code",
     "important": true
 }
 
