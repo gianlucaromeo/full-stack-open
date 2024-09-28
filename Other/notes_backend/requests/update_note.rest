@@ -1,0 +1,7 @@
+PUT http://localhost:3001/api/notes/66f2bb9c41b08e17cfdb3d5a
+Content-Type: application/json
+    
+{
+    "content": "This is a new note from vs code yes",
+    "important": false
+}
