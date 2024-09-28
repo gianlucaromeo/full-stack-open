@@ -1,0 +1,37 @@
+GET http://localhost:3001/wrong_path
+
+###
+
+GET http://localhost:3001/api/persons
+
+###
+
+GET http://localhost:3001/info
+
+###
+
+GET http://localhost:3001/api/persons/66f3c1f803c98c03c05b1ec7
+
+###
+
+DELETE http://localhost:3001/api/persons/66f3c1f803c98c03c05b1ec7
+
+###
+
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Marco Nunzio",
+    "number": "123-4567890"
+}
+
+###
+
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Gianluca Romeo",
+    "number": "040-123456"
+}
