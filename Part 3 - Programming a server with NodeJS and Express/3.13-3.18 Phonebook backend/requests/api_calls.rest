@@ -35,3 +35,13 @@ Content-Type: application/json
     "name": "Gianluca Romeo",
     "number": "040-123456"
 }
+
+###
+
+PUT http://localhost:3001/api/persons/66f800c0c198367e2d5b936f
+Content-Type: application/json
+
+{
+    "name": "Marco Nunzio",
+    "number": "0000"
+}
