@@ -82,6 +82,9 @@ app.delete('/api/notes/:id', (request, response, next) => {
 app.put('/api/notes/:id', (request, response, next) => {
   const { content, important } = request.body
 
+  // Validations are not run by default when findOneAndUpdate and related 
+  // methods are executed.
+  // To enable them, set the runValidators option to true.
   Note.findByIdAndUpdate(
     request.params.id, 
     { content, important },
