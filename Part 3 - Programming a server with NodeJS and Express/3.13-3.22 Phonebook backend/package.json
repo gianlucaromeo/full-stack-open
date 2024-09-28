@@ -7,7 +7,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ui": "rm -rf dist && cd ../../Part\\ 2\\ -\\ Communicating\\ with\\ server/2.6-2.17\\ -\\ Phonebook && npm run build && cp -r dist ../../Part\\ 3\\ -\\ Programming\\ a\\ server\\ with\\ NodeJS\\ and\\ Express/3.13-3.18\\ Phonebook\\ backend",
+    "build:ui": "rm -rf dist && cd ../../Part\\ 2\\ -\\ Communicating\\ with\\ server/2.6-2.17\\ -\\ Phonebook && npm run build && cp -r dist ../../Part\\ 3\\ -\\ Programming\\ a\\ server\\ with\\ NodeJS\\ and\\ Express/3.13-3.22\\ Phonebook\\ backend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "author": "Gianluca Romeo",
