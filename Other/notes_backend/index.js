@@ -73,7 +73,7 @@ app.get('/api/notes/:id', (request, response, next) => {
 
 app.delete('/api/notes/:id', (request, response, next) => {
   Note.findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -82,14 +82,14 @@ app.delete('/api/notes/:id', (request, response, next) => {
 app.put('/api/notes/:id', (request, response, next) => {
   const { content, important } = request.body
 
-  // Validations are not run by default when findOneAndUpdate and related 
+  // Validations are not run by default when findOneAndUpdate and related
   // methods are executed.
   // To enable them, set the runValidators option to true.
   Note.findByIdAndUpdate(
-    request.params.id, 
+    request.params.id,
     { content, important },
     { new: true, runValidators: true, context: 'query' }
-  ) 
+  )
     .then(updatedNote => {
       response.json(updatedNote)
     })
