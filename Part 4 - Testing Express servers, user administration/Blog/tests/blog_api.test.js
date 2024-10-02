@@ -19,6 +19,14 @@ test('there is a correct number of blogs', async () => {
   assert.strictEqual(response.body.length, helper.blogs.length)
 })
 
+test(
+  'the unique identifier property of the blog posts is named id',
+  async () => {
+    const response = await api.get('/api/blogs')
+    assert(response.body[0].id)
+  }
+)
+
 after(async () => {
   await mongoose.connection.close()
 })
