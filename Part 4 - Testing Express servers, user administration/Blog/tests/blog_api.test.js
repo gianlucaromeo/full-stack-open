@@ -74,6 +74,32 @@ test('if the likes property is missing from the request, it will default to 0', 
   assert(likes.includes(0))
 })
 
+test('if the title is missing the backend respons with 400', async () => {
+  const newBlogWithoutTitle = {
+    author: 'New Author',
+    url: 'https://test.com/',
+    likes: 10,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlogWithoutTitle)
+    .expect(400)
+})
+
+test('if the url is missing the backend respons with 400', async () => {
+  const newBlogWithoutTitle = {
+    author: 'New Author',
+    title: 'New Title',
+    likes: 10,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlogWithoutTitle)
+    .expect(400)
+})
+
 
 after(async () => {
   await mongoose.connection.close()

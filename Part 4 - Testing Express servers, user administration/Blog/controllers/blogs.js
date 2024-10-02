@@ -13,6 +13,11 @@ blogsRouter.post('/', async (request, response) => {
   if (!blog.likes) {
     blog.likes = 0
   }
+
+  if (!blog.title || !blog.url) {
+    return response.status(400).json({ error: 'Title and URL are required' })
+  }
+
   const savedBlog = await blog.save()
   response.status(201).json(savedBlog)
 })
