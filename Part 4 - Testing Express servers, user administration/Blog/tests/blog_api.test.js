@@ -100,6 +100,56 @@ test('if the url is missing the backend respons with 400', async () => {
     .expect(400)
 })
 
+test('a blog can be deleted', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToDelete = blogsAtStart[0]
+
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .expect(204)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  assert.strictEqual(blogsAtEnd.length, helper.blogs.length - 1)
+
+  const titles = blogsAtEnd.map(blog => blog.title)
+  assert(!titles.includes(blogToDelete.title))
+})
+
+test('a blog can be updated', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToUpdate = blogsAtStart[0]
+
+  const updatedBlog = {
+    title: 'Updated Title',
+    author: 'Updated Author',
+    url: 'https://updated.com/',
+    likes: 20,
+  }
+
+  await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(updatedBlog)
+    .expect(200)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  assert.strictEqual(blogsAtEnd.length, helper.blogs.length)
+
+  const titles = blogsAtEnd.map(blog => blog.title)
+  assert(titles.includes('Updated Title'))
+
+  const likes = blogsAtEnd.map(blog => blog.likes)
+  assert(likes.includes(20))
+
+  const authors = blogsAtEnd.map(blog => blog.author)
+  assert(authors.includes('Updated Author'))
+
+  const urls = blogsAtEnd.map(blog => blog.url)
+  assert(urls.includes('https://updated.com/'))
+
+  const ids = blogsAtEnd.map(blog => blog.id)
+  assert(ids.includes(blogToUpdate.id))
+})
+
 
 after(async () => {
   await mongoose.connection.close()
