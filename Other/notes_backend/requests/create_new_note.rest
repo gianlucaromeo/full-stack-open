@@ -1,9 +1,11 @@
 POST http://localhost:3001/api/notes/
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY2ZmU3ZWUzM2E5YWFjMjNhN2MyNzU1NiIsImlhdCI6MTcyNzk1NDY2OH0.CQOiGBY8YwtzMSlsxIrKfI8BT2g7riWwOnaawAkp3OY
 
 {
-    "content": "This is a new note from vs code yes",
-    "important": true
+    "content": "This is a new note from vs code part 2",
+    "important": true,
+    "userId": "66fe73932a2e9a575b14f59c"
 }
 
 ###

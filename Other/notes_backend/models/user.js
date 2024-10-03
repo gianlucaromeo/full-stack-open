@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
   notes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Note'
+      ref: 'Note'  // this creates a relationship between the user and the note
     }
   ],
 })
