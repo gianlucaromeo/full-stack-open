@@ -1,13 +1,16 @@
 const { test, after, beforeEach } = require('node:test')
 const assert = require('assert')
 const mongoose = require('mongoose')
+
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
-const helper = require('./blogs_helper')
+
+const helper = require('./tests_helper')
 const Blog = require('../models/blog')
 
 beforeEach(async () => {
+  await helper.initializeUsers()
   await Blog.deleteMany({})
   const blogObjects = helper.blogs.map(blog => new Blog(blog))
   const promiseArray = blogObjects.map(blog => blog.save())
@@ -28,6 +31,14 @@ test(
 )
 
 test('a valid blog can be added', async () => {
+  const firstUser = helper.users[0]
+  const response = await api
+    .post('/api/login')
+    .send({ username: firstUser.username, password: firstUser.password })
+    .expect(200)
+
+  const token = response.body.token
+
   const newBlog = {
     title: 'New Blog',
     author: 'New Author',
@@ -37,6 +48,7 @@ test('a valid blog can be added', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
@@ -52,9 +64,23 @@ test('a valid blog can be added', async () => {
 
   const authors = blogsAtEnd.map(blog => blog.author)
   assert(authors.includes('New Author'))
+
+  const urls = blogsAtEnd.map(blog => blog.url)
+  assert(urls.includes('https://test.com/'))
+
+  const ids = blogsAtEnd.map(blog => blog.user)
+  assert(ids.includes(firstUser.id))
 })
 
 test('if the likes property is missing from the request, it will default to 0', async () => {
+  const firstUser = helper.users[0]
+  const response = await api
+    .post('/api/login')
+    .send({ username: firstUser.username, password: firstUser.password })
+    .expect(200)
+
+  const token = response.body.token
+
   const newBlogWithoutLikes = {
     title: 'New Blog',
     author: 'New Author',
@@ -64,6 +90,7 @@ test('if the likes property is missing from the request, it will default to 0', 
   await api
     .post('/api/blogs')
     .send(newBlogWithoutLikes)
+    .set('Authorization', `Bearer ${token}`)
     .expect(201)
     .expect('Content-Type', /application\/json/)
 
@@ -75,6 +102,14 @@ test('if the likes property is missing from the request, it will default to 0', 
 })
 
 test('if the title is missing the backend respons with 400', async () => {
+  const firstUser = helper.users[0]
+  const response = await api
+    .post('/api/login')
+    .send({ username: firstUser.username, password: firstUser.password })
+    .expect(200)
+
+  const token = response.body.token
+
   const newBlogWithoutTitle = {
     author: 'New Author',
     url: 'https://test.com/',
@@ -84,10 +119,19 @@ test('if the title is missing the backend respons with 400', async () => {
   await api
     .post('/api/blogs')
     .send(newBlogWithoutTitle)
+    .set('Authorization', `Bearer ${token}`)
     .expect(400)
 })
 
 test('if the url is missing the backend respons with 400', async () => {
+  const firstUser = helper.users[0]
+  const response = await api
+    .post('/api/login')
+    .send({ username: firstUser.username, password: firstUser.password })
+    .expect(200)
+
+  const token = response.body.token
+
   const newBlogWithoutTitle = {
     author: 'New Author',
     title: 'New Title',
@@ -97,6 +141,7 @@ test('if the url is missing the backend respons with 400', async () => {
   await api
     .post('/api/blogs')
     .send(newBlogWithoutTitle)
+    .set('Authorization', `Bearer ${token}`)
     .expect(400)
 })
 

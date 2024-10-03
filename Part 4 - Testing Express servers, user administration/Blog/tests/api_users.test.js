@@ -1,6 +1,6 @@
 const { test, describe, beforeEach, after } = require('node:test')
 const assert = require('node:assert')
-const helper = require('./users_helper')
+const helper = require('./tests_helper')
 
 const mongoose = require('mongoose')
 

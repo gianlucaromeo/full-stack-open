@@ -1,6 +1,6 @@
 const { test, describe } = require('node:test')
 const assert = require('node:assert')
-const { totalLikes, favoriteBlog, mostBlogs, mostLikes } = require('../utils/list_helper')
+const helper = require('./tests_helper')
 
 const blogs = [
   {
@@ -64,26 +64,26 @@ const blogs = [
 // TOTAL LIKES
 describe('total likes', () => {
   test('of empty list is zero', () => {
-    assert.strictEqual(totalLikes([]), 0)
+    assert.strictEqual(helper.totalLikes([]), 0)
   })
 
   test('when list has only one blog equals the likes of that', () => {
-    assert.strictEqual(totalLikes([blogs[0]]), 7)
+    assert.strictEqual(helper.totalLikes([blogs[0]]), 7)
   })
 
   test('of a bigger list is calculated right', () => {
-    assert.strictEqual(totalLikes(blogs), 48)
+    assert.strictEqual(helper.totalLikes(blogs), 48)
   })
 })
 
 // FAVORITE BLOG
 describe('favorite blog', () => {
   test('of empty list is null', () => {
-    assert.strictEqual(favoriteBlog([]), null)
+    assert.strictEqual(helper.favoriteBlog([]), null)
   })
 
   test('when list has only one blog equals the properties of that', () => {
-    const result = favoriteBlog(blogs.slice(0, 1))
+    const result = helper.favoriteBlog(blogs.slice(0, 1))
     const expected = {
       title: 'React patterns',
       author: 'Michael Chan',
@@ -93,7 +93,7 @@ describe('favorite blog', () => {
   })
 
   test('of a bigger list is calculated correctly', () => {
-    const result = favoriteBlog(blogs)
+    const result = helper.favoriteBlog(blogs)
     const expected = {
       title: 'Canonical string reduction',
       author: 'Edsger W. Dijkstra',
@@ -103,7 +103,7 @@ describe('favorite blog', () => {
   })
 
   test('of a bigger list with two blogs with same likes, the first one in the list is returned', () => {
-    const result = favoriteBlog(blogs)
+    const result = helper.favoriteBlog(blogs)
     const expected = {
       title: 'Canonical string reduction',
       author: 'Edsger W. Dijkstra',
@@ -116,14 +116,14 @@ describe('favorite blog', () => {
 // MOST BLOGS
 describe('most blogs', () => {
   test('of empty list equals null', () => {
-    const result = mostBlogs([])
+    const result = helper.mostBlogs([])
     const expected = null
 
     assert.deepStrictEqual(result, expected)
   })
 
   test('when list has only one blog equals that one', () => {
-    const result = mostBlogs([blogs[0]])
+    const result = helper.mostBlogs([blogs[0]])
     const expected = {
       author: blogs[0].author,
       blogs: 1,
@@ -133,7 +133,7 @@ describe('most blogs', () => {
   })
 
   test('of a bigger list is calculated right', () => {
-    const result = mostBlogs(blogs)
+    const result = helper.mostBlogs(blogs)
     const expected = {
       author: 'Robert C. Martin',
       blogs: 3,
@@ -146,14 +146,14 @@ describe('most blogs', () => {
 // MOST LIKES
 describe('most likes', () => {
   test('of empty list equals null', () => {
-    const result = mostLikes([])
+    const result = helper.mostLikes([])
     const expected = null
 
     assert.deepStrictEqual(result, expected)
   })
 
   test('when list has only one blog equals that one', () => {
-    const result = mostLikes([blogs[0]])
+    const result = helper.mostLikes([blogs[0]])
     const expected = {
       author: blogs[0].author,
       likes: blogs[0].likes,
@@ -163,7 +163,7 @@ describe('most likes', () => {
   })
 
   test('of a bigger list is calculated right', () => {
-    const result = mostLikes(blogs)
+    const result = helper.mostLikes(blogs)
     const expected = {
       'author': 'Edsger W. Dijkstra',
       'likes': 17
