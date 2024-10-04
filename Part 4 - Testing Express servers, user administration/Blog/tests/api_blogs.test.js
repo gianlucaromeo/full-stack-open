@@ -7,37 +7,40 @@ const app = require('../app')
 const api = supertest(app)
 
 const helper = require('./tests_helper')
-const Blog = require('../models/blog')
 
 beforeEach(async () => {
   await helper.initializeUsers()
-  await Blog.deleteMany({})
-  const blogObjects = helper.blogs.map(blog => new Blog(blog))
-  const promiseArray = blogObjects.map(blog => blog.save())
-  await Promise.all(promiseArray)
+  await helper.initializeBlogs()
 })
 
 test('there is a correct number of blogs', async () => {
-  const response = await api.get('/api/blogs')
+  const token = await helper.loginFirstUserAndGetToken()
+
+  const response = await api
+    .get('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
   assert.strictEqual(response.body.length, helper.blogs.length)
 })
 
 test(
   'the unique identifier property of the blog posts is named id',
   async () => {
-    const response = await api.get('/api/blogs')
+    const token = await helper.loginFirstUserAndGetToken()
+
+    const response = await api
+      .get('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
     assert(response.body[0].id)
   }
 )
 
 test('a valid blog can be added', async () => {
-  const firstUser = helper.users[0]
-  const response = await api
-    .post('/api/login')
-    .send({ username: firstUser.username, password: firstUser.password })
-    .expect(200)
-
-  const token = response.body.token
+  const token = await helper.loginFirstUserAndGetToken()
 
   const newBlog = {
     title: 'New Blog',
@@ -69,17 +72,12 @@ test('a valid blog can be added', async () => {
   assert(urls.includes('https://test.com/'))
 
   const ids = blogsAtEnd.map(blog => blog.user)
-  assert(ids.includes(firstUser.id))
+  const userId = await helper.userIdFromToken(token)
+  assert(ids.map((idObject) => idObject.toString()).includes(userId))
 })
 
 test('if the likes property is missing from the request, it will default to 0', async () => {
-  const firstUser = helper.users[0]
-  const response = await api
-    .post('/api/login')
-    .send({ username: firstUser.username, password: firstUser.password })
-    .expect(200)
-
-  const token = response.body.token
+  const token = await helper.loginFirstUserAndGetToken()
 
   const newBlogWithoutLikes = {
     title: 'New Blog',
@@ -102,13 +100,7 @@ test('if the likes property is missing from the request, it will default to 0', 
 })
 
 test('if the title is missing the backend respons with 400', async () => {
-  const firstUser = helper.users[0]
-  const response = await api
-    .post('/api/login')
-    .send({ username: firstUser.username, password: firstUser.password })
-    .expect(200)
-
-  const token = response.body.token
+  const token = await helper.loginFirstUserAndGetToken()
 
   const newBlogWithoutTitle = {
     author: 'New Author',
@@ -124,13 +116,7 @@ test('if the title is missing the backend respons with 400', async () => {
 })
 
 test('if the url is missing the backend respons with 400', async () => {
-  const firstUser = helper.users[0]
-  const response = await api
-    .post('/api/login')
-    .send({ username: firstUser.username, password: firstUser.password })
-    .expect(200)
-
-  const token = response.body.token
+  const token = await helper.loginFirstUserAndGetToken()
 
   const newBlogWithoutTitle = {
     author: 'New Author',
@@ -145,12 +131,14 @@ test('if the url is missing the backend respons with 400', async () => {
     .expect(400)
 })
 
-test('a blog can be deleted', async () => {
+test('a blog can be deleted from the user who created it', async () => {
   const blogsAtStart = await helper.blogsInDb()
   const blogToDelete = blogsAtStart[0]
 
+  const token = await helper.loginFirstUserAndGetToken()
   await api
     .delete(`/api/blogs/${blogToDelete.id}`)
+    .set('Authorization', `Bearer ${token}`)
     .expect(204)
 
   const blogsAtEnd = await helper.blogsInDb()
@@ -160,7 +148,7 @@ test('a blog can be deleted', async () => {
   assert(!titles.includes(blogToDelete.title))
 })
 
-test('a blog can be updated', async () => {
+test('a blog can be updated from the user who created it', async () => {
   const blogsAtStart = await helper.blogsInDb()
   const blogToUpdate = blogsAtStart[0]
 
@@ -171,8 +159,11 @@ test('a blog can be updated', async () => {
     likes: 20,
   }
 
+  const token = await helper.loginFirstUserAndGetToken()
+
   await api
     .put(`/api/blogs/${blogToUpdate.id}`)
+    .set('Authorization', `Bearer ${token}`)
     .send(updatedBlog)
     .expect(200)
 

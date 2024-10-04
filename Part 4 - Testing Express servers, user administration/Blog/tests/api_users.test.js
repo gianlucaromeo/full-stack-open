@@ -152,10 +152,10 @@ describe('viewing a specific user', () => {
   })
 
   test('fails with statuscode 404 if user does not exist', async () => {
-    const validNonexistingId = await helper.nonExistingId()
+    const nonExistingUserId = await helper.nonExistingUserId()
 
     await api
-      .get(`/api/users/${validNonexistingId}`)
+      .get(`/api/users/${nonExistingUserId}`)
       .expect(404)
   })
 })
