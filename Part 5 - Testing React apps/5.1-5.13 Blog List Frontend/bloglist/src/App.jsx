@@ -116,6 +116,12 @@ const App = () => {
     )
   }
 
+  const handleLike = async (blog) => {
+    const newBlog = { ...blog, likes: blog.likes + 1 }
+    const updatedBlog = await blogService.like(newBlog)
+    setBlogs(blogs.map(b => b.id === blog.id ? updatedBlog : b))
+  }
+
   return (
     <div>
       <InfoMessage message={message} type={messageType} />
@@ -129,7 +135,7 @@ const App = () => {
 
       <h2>blogs</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLike={handleLike} />
       )}
     </div>
   )
