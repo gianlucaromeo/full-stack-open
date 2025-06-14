@@ -47,3 +47,30 @@ test('renders URL and likes when the button controlling the shown details has be
     const likes = screen.getByText('10')
     expect(likes).toBeDefined()
 })
+
+// ensures that if the like button is clicked twice, the event handler the component received as props is called twice.
+test('if the like button is clicked twice, the event handler the component received as props is called twice', async () => {
+    const blog = {
+        title: 'Component testing is done with react-testing-library',
+        author: 'Robert C. Martin',
+        url: 'http://www.google.com',
+        likes: 10,
+        user: {
+            username: 'testuser'
+        }
+    }
+
+    const mockHandler = vi.fn()
+
+    render(<Blog blog={blog} handleLike={mockHandler} />)
+
+    const user = userEvent.setup()
+    const button = screen.getByText('view')
+    await user.click(button)
+
+    const likeButton = screen.getByText('Like')
+    await user.click(likeButton)
+    await user.click(likeButton)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
+})
