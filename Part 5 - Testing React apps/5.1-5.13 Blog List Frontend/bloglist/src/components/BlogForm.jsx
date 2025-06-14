@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const BlogForm = ({
     handleSubmit,
@@ -24,6 +25,12 @@ const BlogForm = ({
             <button type="submit">Create</button>
         </form>
     )
+}
+
+BlogForm.displayName = 'BlogForm'
+
+BlogForm.propTypes = {
+    handleSubmit: PropTypes.func.isRequired
 }
 
 export default BlogForm
