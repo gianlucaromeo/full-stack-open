@@ -21,11 +21,11 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
       </button>
       {showDetails && (
         <div>
-          <p>URL: {blog.url}</p>
-          <p>Likes: {blog.likes}</p>
+          <p>{blog.url}</p>
+          <p>{blog.likes}</p>
           <button onClick={() => handleLike(blog)}>Like</button>
-          <p>User: {blog.user.username}</p>
-          <button onClick={() => handleDelete(blog)}>Delete</button>
+          {blog.user.username && <p>User: {blog.user.username}</p>}
+          {blog.user.username && <button onClick={() => handleDelete(blog)}>Delete</button>}
         </div>
       )}
     </div>
