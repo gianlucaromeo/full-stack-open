@@ -1,4 +1,3 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 
 const LoginForm = ({
@@ -34,6 +33,7 @@ const LoginForm = ({
     )
 }
 
+LoginForm.displayName = 'LoginForm'
 
 LoginForm.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
