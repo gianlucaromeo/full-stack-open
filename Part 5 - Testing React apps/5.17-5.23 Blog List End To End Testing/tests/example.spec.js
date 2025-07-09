@@ -63,4 +63,37 @@ describe('Blog app', () => {
       await expect(page.getByText('test title')).not.toBeVisible()
     })
   })
+
+  // Make a test that ensures that only the user who added the blog sees the blog's delete button.
+  describe('When logged in as another user', () => {
+    beforeEach(async ({ page, request }) => {
+      await request.post('/api/users', {
+        data: {
+          name: 'Test User',
+          username: 'testuser',
+          password: 'testpass'
+        }
+      })
+      await loginWith(page, 'testuser', 'testpass')
+      await createBlog(page, 'test title 1', 'test author 1', 'test url 1')
+    })
+
+    test('only the creator can see the delete button', async ({ page }) => {
+
+      // Test user can see the blog
+      await expect(page.getByText('test title 1')).toBeVisible()
+      await page.getByRole('button', { name: 'view' }).click()
+      await expect(page.getByRole('button', { name: 'Delete' }))
+        .toBeVisible()
+
+      // Logout
+      await page.getByRole('button', { name: 'logout' }).click()
+
+      // Login with user 1
+      await loginWith(page, 'mluukkai', 'salainen')
+      await expect(page.getByText('test title 1')).not.toBeVisible()
+    })
+  })
+
+
 })
