@@ -15,4 +15,15 @@ const createBlog = async (page, title, author, url) => {
   await page.getByText(title).waitFor()
 }
 
-module.exports = { loginWith, createBlog }
+const likeBlog = async (page, title) => {
+  // Check if the like button is visible or not
+  if (await page.getByTestId(`like-btn-${title}`).isVisible()) {
+    await page.getByTestId(`like-btn-${title}`).click()
+  } else {
+    await page.getByTestId(`view-btn-${title}`).click()
+    await page.getByTestId(`like-btn-${title}`).click()
+  }
+  await page.waitForTimeout(1000)
+}
+
+module.exports = { loginWith, createBlog, likeBlog }

@@ -1,5 +1,5 @@
 const { test, expect, beforeEach, describe } = require('@playwright/test')
-const { loginWith, createBlog } = require('./helper')
+const { loginWith, createBlog, likeBlog } = require('./helper')
 
 describe('Blog app', () => {
   beforeEach(async ({ page, request }) => {
@@ -64,7 +64,6 @@ describe('Blog app', () => {
     })
   })
 
-  // Make a test that ensures that only the user who added the blog sees the blog's delete button.
   describe('When logged in as another user', () => {
     beforeEach(async ({ page, request }) => {
       await request.post('/api/users', {
@@ -92,6 +91,43 @@ describe('Blog app', () => {
       // Login with user 1
       await loginWith(page, 'mluukkai', 'salainen')
       await expect(page.getByText('test title 1')).not.toBeVisible()
+    })
+  })
+
+  describe('When multiple blogs are created', () => {
+    beforeEach(async ({ page }) => {
+      await loginWith(page, 'mluukkai', 'salainen')
+      await createBlog(page, 'test title 1', 'test author 1', 'test url 1')
+      await createBlog(page, 'test title 2', 'test author 2', 'test url 2')
+      await createBlog(page, 'test title 3', 'test author 3', 'test url 3')
+    })
+
+    test('blogs are ordered by likes', async ({ page }) => {
+      await expect(page.getByText('test title 1')).toBeVisible()
+      await expect(page.getByText('test title 2')).toBeVisible()
+      await expect(page.getByText('test title 3')).toBeVisible()
+
+      // Open all views
+      await page.getByTestId('view-btn-test title 1').click()
+      await page.getByTestId('view-btn-test title 2').click()
+      await page.getByTestId('view-btn-test title 3').click()
+
+      await likeBlog(page, 'test title 1') // 1:1, 2:0, 3:0
+
+      // Expect test title 1 to be first by getting text by likes
+      await expect(page.getByTestId('likes').first()).toHaveText('1')
+      await expect(page.getByTestId('likes').nth(1)).toHaveText('0')
+      await expect(page.getByTestId('likes').nth(2)).toHaveText('0')
+
+      // Press like twice for test title 2
+      await likeBlog(page, 'test title 2') // 1:1, 2:1, 3:0
+      await likeBlog(page, 'test title 2') // 1:1, 2:2, 3:0
+
+      // Expect test title 2 to be first now because of likes
+      await expect(page.getByTestId('likes').first()).toHaveText('2')
+      await expect(page.getByTestId('likes').nth(1)).toHaveText('1')
+      await expect(page.getByTestId('likes').nth(2)).toHaveText('0')
+
     })
   })
 
